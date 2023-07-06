@@ -1,6 +1,7 @@
 ﻿using Competition_Tournament.Data;
 using Competition_Tournament.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Controllers
 {
@@ -23,16 +24,34 @@ namespace Competition_Tournament.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Create(Team team){
-            _context.Teams.Add(team);
-            _context.SaveChanges();
-            
-            return RedirectToAction("Index");
+        public IActionResult Edit(int id)
+        {
+            var team = _context.Teams.Find(id);
+            if (team == null)
+            {
+                return NotFound();
+            }
+            return View(team);
         }
 
-        public IActionResult Delete(int id)
+        [HttpPost]
+        public IActionResult Create(Team team)
         {
+            if (team.CreatedOn > DateTime.Today)
+            {
+                ModelState.AddModelError("CreatedOn", "The date cannot be in the future.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Teams.Add(team);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(team);
+        }
+
+        public IActionResult Delete(int id){
             var team = _context.Teams.Find(id);
             if (team == null)
             {
@@ -41,6 +60,23 @@ namespace Competition_Tournament.Controllers
             _context.Teams.Remove(team);
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Team team)
+        {
+            if (team.CreatedOn > DateTime.Today)
+            {
+                ModelState.AddModelError("CreatedOn", "The date cannot be in the future.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Entry(team).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(team);
         }
     }
 }
