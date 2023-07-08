@@ -10,100 +10,90 @@ using Competition_Tournament.Models;
 
 namespace Competition_Tournament.Controllers
 {
-    public class PlayersController : Controller
+    public class CompetitionsController : Controller
     {
         private readonly CompetitionManagementContext _context;
 
-        public PlayersController(CompetitionManagementContext context)
+        public CompetitionsController(CompetitionManagementContext context)
         {
             _context = context;
         }
 
-        // GET: Players
-        public async Task<IActionResult> Index(int? id)
+        // GET: Competitions
+        public async Task<IActionResult> Index()
         {
-            if (id == null)
-            {
-                var allPlayers = _context.Players.Include(p => p.Team);
-                return View(await allPlayers.ToListAsync());
-            }
-            else
-            {
-                var playersInTeam = _context.Players
-                    .Where(p => p.TeamId == id)
-                    .Include(p => p.Team);
-                return View(await playersInTeam.ToListAsync());
-            }
+            var competitionManagementContext = _context.Competitions.Include(c => c.CompetitionTypeNavigation);
+            return View(await competitionManagementContext.ToListAsync());
         }
 
-        // GET: Players/Details/5
+        // GET: Competitions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null || _context.Competitions == null)
             {
                 return NotFound();
             }
 
-            var player = await _context.Players
-                .Include(p => p.Team)
+            var competition = await _context.Competitions
+                .Include(c => c.CompetitionTypeNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (player == null)
+            if (competition == null)
             {
                 return NotFound();
             }
 
-            return View(player);
+            return View(competition);
         }
 
-        // GET: Players/Create
+        // GET: Competitions/Create
         public IActionResult Create()
         {
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
+            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id");
             return View();
         }
 
-        // POST: Players/Create
+        // POST: Competitions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LastName,FirstName,Age,TeamId")] Player player)
+        public async Task<IActionResult> Create([Bind("Id,Name,EndDate,StartDate,Location,CompetitionType")] Competition competition)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(player);
+                _context.Add(competition);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", player.TeamId);
-            return View(player);
+            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id", competition.CompetitionType);
+            return View(competition);
         }
 
-        // GET: Players/Edit/5
+        // GET: Competitions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null || _context.Competitions == null)
             {
                 return NotFound();
             }
 
-            var player = await _context.Players.FindAsync(id);
-            if (player == null)
+            var competition = await _context.Competitions.FindAsync(id);
+            if (competition == null)
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", player.TeamId);
-            return View(player);
+            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id", competition.CompetitionType);
+            return View(competition);
         }
 
-        // POST: Players/Edit/5
+        // POST: Competitions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,LastName,FirstName,Age,TeamId")] Player player)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,EndDate,StartDate,Location,CompetitionType")] Competition competition)
         {
-            if (id != player.Id)
+            if (id != competition.Id)
             {
                 return NotFound();
             }
@@ -112,12 +102,12 @@ namespace Competition_Tournament.Controllers
             {
                 try
                 {
-                    _context.Update(player);
+                    _context.Update(competition);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PlayerExists(player.Id))
+                    if (!CompetitionExists(competition.Id))
                     {
                         return NotFound();
                     }
@@ -128,51 +118,51 @@ namespace Competition_Tournament.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", player.TeamId);
-            return View(player);
+            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id", competition.CompetitionType);
+            return View(competition);
         }
 
-        // GET: Players/Delete/5
+        // GET: Competitions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Players == null)
+            if (id == null || _context.Competitions == null)
             {
                 return NotFound();
             }
 
-            var player = await _context.Players
-                .Include(p => p.Team)
+            var competition = await _context.Competitions
+                .Include(c => c.CompetitionTypeNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (player == null)
+            if (competition == null)
             {
                 return NotFound();
             }
 
-            return View(player);
+            return View(competition);
         }
 
-        // POST: Players/Delete/5
+        // POST: Competitions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Players == null)
+            if (_context.Competitions == null)
             {
-                return Problem("Entity set 'CompetitionManagementContext.Players'  is null.");
+                return Problem("Entity set 'CompetitionManagementContext.Competitions'  is null.");
             }
-            var player = await _context.Players.FindAsync(id);
-            if (player != null)
+            var competition = await _context.Competitions.FindAsync(id);
+            if (competition != null)
             {
-                _context.Players.Remove(player);
+                _context.Competitions.Remove(competition);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PlayerExists(int id)
+        private bool CompetitionExists(int id)
         {
-          return (_context.Players?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Competitions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

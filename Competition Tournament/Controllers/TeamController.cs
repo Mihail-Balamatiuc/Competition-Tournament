@@ -51,12 +51,17 @@ namespace Competition_Tournament.Controllers
             return View(team);
         }
 
-        public IActionResult Delete(int id){
+        public async Task<IActionResult> Delete(int id){
             var team = _context.Teams.Find(id);
             if (team == null)
             {
                 return NotFound();
             }
+            var players = _context.Players.Where(x => x.TeamId == id);
+            foreach (var player in players)
+                player.TeamId = null;
+            _context.SaveChanges();
+
             _context.Teams.Remove(team);
             _context.SaveChanges();
             return RedirectToAction("Index");
