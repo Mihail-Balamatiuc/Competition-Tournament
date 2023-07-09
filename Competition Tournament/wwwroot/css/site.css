@@ -16,3 +16,30 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#cnt{
+    width: 100%;
+    min-height: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#cntr{
+    width: 40%;
+}
+
+.cmp-cnt {
+    background-color: lightblue;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+.cmp-cnt:hover {
+    transition: 0.1s;
+    transform: scale(1.01);
+    box-shadow: 0px 0px 10px 4px rgb(0, 98, 255);
+    opacity: 20;
+}

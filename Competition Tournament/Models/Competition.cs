@@ -6,32 +6,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Models;
 
-[Table("Competition")]
+[Table("COMPETITION")]
 public partial class Competition
 {
     [Key]
+    [Column("ID")]
     public int Id { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Name { get; set; }
 
-    [Column("End_Date", TypeName = "date")]
-    public DateTime? EndDate { get; set; }
-
-    [Column("Start_Date", TypeName = "date")]
+    [Column(TypeName = "date")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? StartDate { get; set; }
+
+    [Column(TypeName = "date")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    public DateTime? EndDate { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Location { get; set; }
 
-    [Column("Competition_Type")]
     public int? CompetitionType { get; set; }
 
     [ForeignKey("CompetitionType")]
     [InverseProperty("Competitions")]
-    public virtual CompetitionType? CompetitionTypeNavigation { get; set; }
+    public virtual Competitiontype? CompetitionTypeNavigation { get; set; }
 
     [InverseProperty("Competition")]
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();

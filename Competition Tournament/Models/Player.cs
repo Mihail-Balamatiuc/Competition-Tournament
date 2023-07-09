@@ -6,25 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Models;
 
-[Table("Player")]
+[Table("PLAYER")]
 public partial class Player
 {
     [Key]
+    [Column("ID")]
     public int Id { get; set; }
 
-    [Column("Last_Name")]
-    [StringLength(255)]
-    [Unicode(false)]
-    public string? LastName { get; set; }
-
-    [Column("First_Name")]
     [StringLength(255)]
     [Unicode(false)]
     public string? FirstName { get; set; }
 
+    [StringLength(255)]
+    [Unicode(false)]
+    public string? LastName { get; set; }
+
     public int? Age { get; set; }
 
-    [Column("Team_Id")]
+    [Column("TeamID")]
     public int? TeamId { get; set; }
 
     [ForeignKey("TeamId")]

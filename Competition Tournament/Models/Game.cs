@@ -6,43 +6,42 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Models;
 
-[Table("Game")]
+[Table("GAME")]
 public partial class Game
 {
     [Key]
+    [Column("ID")]
     public int Id { get; set; }
 
-    [Column("Team1_Id")]
+    [Column("Team1ID")]
     public int? Team1Id { get; set; }
 
-    [Column("Team2_Id")]
+    [Column("Team2ID")]
     public int? Team2Id { get; set; }
 
-    [Column("Team1_Goals")]
-    public int? Team1Goals { get; set; }
+    public int? Team1Score { get; set; }
 
-    [Column("Team2_Goals")]
-    public int? Team2Goals { get; set; }
+    public int? Team2Score { get; set; }
 
-    [Column("Competition_Id")]
+    [StringLength(255)]
+    [Unicode(false)]
+    public string? Team1Name { get; set; }
+
+    [StringLength(255)]
+    [Unicode(false)]
+    public string? Team2Name { get; set; }
+
+    [Column("CompetitionID")]
     public int? CompetitionId { get; set; }
 
     [Column(TypeName = "datetime")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? Date { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Stadium { get; set; }
-
-    [Column("Team1_Name")]
-    [StringLength(255)]
-    [Unicode(false)]
-    public string? Team1Name { get; set; }
-
-    [Column("Team2_Name")]
-    [StringLength(255)]
-    [Unicode(false)]
-    public string? Team2Name { get; set; }
 
     [ForeignKey("CompetitionId")]
     [InverseProperty("Games")]

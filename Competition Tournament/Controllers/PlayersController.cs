@@ -25,6 +25,7 @@ namespace Competition_Tournament.Controllers
             if (id == null)
             {
                 var allPlayers = _context.Players.Include(p => p.Team);
+                ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
                 return View(await allPlayers.ToListAsync());
             }
             else
@@ -32,6 +33,7 @@ namespace Competition_Tournament.Controllers
                 var playersInTeam = _context.Players
                     .Where(p => p.TeamId == id)
                     .Include(p => p.Team);
+                ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
                 return View(await playersInTeam.ToListAsync());
             }
         }
@@ -92,7 +94,7 @@ namespace Competition_Tournament.Controllers
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", player.TeamId);
+            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
             return View(player);
         }
 

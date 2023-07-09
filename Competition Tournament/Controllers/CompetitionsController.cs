@@ -48,7 +48,7 @@ namespace Competition_Tournament.Controllers
         // GET: Competitions/Create
         public IActionResult Create()
         {
-            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id");
+            ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Competition_Tournament.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id", competition.CompetitionType);
+            ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Id", competition.CompetitionType);
             return View(competition);
         }
 
@@ -77,12 +77,14 @@ namespace Competition_Tournament.Controllers
                 return NotFound();
             }
 
-            var competition = await _context.Competitions.FindAsync(id);
+            Competition? competition = await _context.Competitions
+                .Include(c => c.Teams)
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (competition == null)
             {
                 return NotFound();
             }
-            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id", competition.CompetitionType);
+            ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
             return View(competition);
         }
 
@@ -118,7 +120,7 @@ namespace Competition_Tournament.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompetitionType"] = new SelectList(_context.CompetitionTypes, "Id", "Id", competition.CompetitionType);
+            ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Id", competition.CompetitionType);
             return View(competition);
         }
 

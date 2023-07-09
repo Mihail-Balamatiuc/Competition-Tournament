@@ -6,24 +6,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Models;
 
-[Table("Team")]
+[Table("TEAM")]
 public partial class Team
 {
     [Key]
+    [Column("ID")]
     public int Id { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Name { get; set; }
 
-    [Column("Award_nr")]
-    public int? AwardNr { get; set; }
+    public int? AwardsNr { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Motto { get; set; }
 
-    [Column("Created_On", TypeName = "date")]
+    [Column(TypeName = "date")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? CreatedOn { get; set; }
 
     [InverseProperty("Team1")]

@@ -1,8 +1,27 @@
-﻿@{
+﻿@model List<Competition_Tournament.Models.Competition>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Hello World</h1>
+    <h1 class="display-4">Hello World <3</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div id="cnt">
+        <div id="cntr">
+            <h3>All Competitions:</h3>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var competition = Model[i];
+                <div class = "cmp-cnt">
+                    <h4>Competition @(i + 1): @competition.Name</h4>
+                    <p>Winner: Uncknown</p>
+                    <p>Started: @competition.StartDate</p>
+                    <p>Ended: @competition.EndDate</p>
+                    <p>Location: @competition.Location </p>
+                    <a href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a>
+                </div>
+            }
+        </div>
+    </div>
 </div>
