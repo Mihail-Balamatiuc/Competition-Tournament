@@ -48,8 +48,9 @@ namespace Competition_Tournament.Controllers
         }
 
         // GET: Games/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            ViewData["id"] = id;
             ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
             ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");
             ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
@@ -61,17 +62,30 @@ namespace Competition_Tournament.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Team1Id,Team2Id,Team1Score,Team2Score,Team1Name,Team2Name,CompetitionId,Date,Stadium")] Game game)
+        public async Task<IActionResult> Create([Bind("Team1Id,Team2Id,Team1Score,Team2Score,Team1Name,Team2Name,CompetitionId,Date,Stadium")] Game game, int CompId)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(game);
+                if (game.Team1Id == game.Team2Id)
+                {
+                    ModelState.AddModelError("Team2Id", "Teams must be different");
+                    ViewData["id"] = CompId;
+                    ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
+                    ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");
+                    ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
+                    return View(game);
+                }
+                game.Team1Name = _context.Teams.Find(game.Team1Id).Name;
+				game.Team2Name = _context.Teams.Find(game.Team2Id).Name;
+                game.CompetitionId = CompId;
+				_context.Add(game);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Id", game.CompetitionId);
-            ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Id", game.Team1Id);
-            ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Id", game.Team2Id);
+            ViewData["id"] = CompId;
+            ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
+            ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");
+            ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
             return View(game);
         }
 
@@ -110,7 +124,9 @@ namespace Competition_Tournament.Controllers
             {
                 try
                 {
-                    _context.Update(game);
+					game.Team1Name = _context.Teams.Find(game.Team1Id).Name;
+					game.Team2Name = _context.Teams.Find(game.Team2Id).Name;
+					_context.Update(game);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

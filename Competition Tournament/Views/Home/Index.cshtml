@@ -5,8 +5,6 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Hello World <3</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <div id="cnt">
         <div id="cntr">
             <h3>All Competitions:</h3>
@@ -15,11 +13,23 @@
                 var competition = Model[i];
                 <div class = "cmp-cnt">
                     <h4>Competition @(i + 1): @competition.Name</h4>
-                    <p>Winner: Uncknown</p>
-                    <p>Started: @competition.StartDate</p>
-                    <p>Ended: @competition.EndDate</p>
+                    <p>Winner: Unknown</p>
+                    <p>Started: @competition.StartDate?.ToString("dd/MM/yyyy")</p>
+                    <p>Ended: @competition.EndDate?.ToString("dd/MM/yyyy")</p>
                     <p>Location: @competition.Location </p>
+                    <p>Type: @competition.CompetitionTypeNavigation.Name</p>
                     <a href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a>
+                    <h6>Games played:</h6>
+                    @if (competition.Games.Count > 0)
+                    {
+                        @foreach (var game in competition.Games)
+                        {
+                            <p>@game.Team1Name - @game.Team2Name (@game.Team1Score - @game.Team2Score)</p>
+                        }
+                    }
+                    else{
+                        <p>No games</p>
+                    }
                 </div>
             }
         </div>

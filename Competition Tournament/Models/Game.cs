@@ -35,8 +35,6 @@ public partial class Game
     public int? CompetitionId { get; set; }
 
     [Column(TypeName = "datetime")]
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? Date { get; set; }
 
     [StringLength(255)]

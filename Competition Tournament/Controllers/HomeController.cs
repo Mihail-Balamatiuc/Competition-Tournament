@@ -20,7 +20,7 @@ namespace Competition_Tournament.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var competitions = await _context.Competitions.ToListAsync();
+            var competitions = await _context.Competitions.Include(c => c.Games).Include(c => c.CompetitionTypeNavigation).ToListAsync();
             return View(competitions);
         }
 

@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Motto)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
+                @Html.Raw(item.CreatedOn?.ToString("d"))
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

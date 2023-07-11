@@ -57,15 +57,21 @@ namespace Competition_Tournament.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,EndDate,StartDate,Location,CompetitionType")] Competition competition)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Location,CompetitionType")] Competition competition)
         {
             if (ModelState.IsValid)
             {
+                if (competition.StartDate > competition.EndDate)
+                {
+                    ModelState.AddModelError("EndDate", "End Date must be after Start Date.");
+                    ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
+                    return View(competition);
+                }
                 _context.Add(competition);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
-            ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Id", competition.CompetitionType);
+            ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
             return View(competition);
         }
 
@@ -102,6 +108,12 @@ namespace Competition_Tournament.Controllers
 
             if (ModelState.IsValid)
             {
+                if (competition.StartDate > competition.EndDate)
+                {
+                    ModelState.AddModelError("EndDate", "End Date must be after Start Date.");
+                    ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
+                    return View(competition);
+                }
                 try
                 {
                     _context.Update(competition);
