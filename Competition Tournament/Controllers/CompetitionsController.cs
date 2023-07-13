@@ -34,9 +34,7 @@ namespace Competition_Tournament.Controllers
                 return NotFound();
             }
 
-            var competition = await _context.Competitions
-                .Include(c => c.CompetitionTypeNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var competition = await _context.Competitions.Include(c => c.CompetitionTypeNavigation).Include(c => c.Games).FirstOrDefaultAsync(m => m.Id == id);
             if (competition == null)
             {
                 return NotFound();
@@ -160,6 +158,24 @@ namespace Competition_Tournament.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            Competition? comp = await _context.Competitions
+                .Include(c => c.Teams).Include(c => c.Games)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            List<Game> del = new List<Game>();
+
+            foreach (var game in comp.Games)
+            {
+                if (game.CompetitionId == id)
+                {
+                    del.Add(game);
+                }
+            }
+
+            foreach (var game in del)
+            {
+                _context.Games.Remove(game);
+            }
+
             if (_context.Competitions == null)
             {
                 return Problem("Entity set 'CompetitionManagementContext.Competitions'  is null.");
@@ -177,6 +193,111 @@ namespace Competition_Tournament.Controllers
         private bool CompetitionExists(int id)
         {
           return (_context.Competitions?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public async Task<IActionResult> Teams(int competitionId)
+        {
+            Competition? competition = await _context.Competitions
+                .Include(c => c.Teams)
+                .FirstOrDefaultAsync(c => c.Id == competitionId);
+
+            List<Team> allTeams = await _context.Teams.ToListAsync();
+            if (competition == null)
+            {
+                return NotFound();
+            }
+
+            List<Team> participatingTeams = competition.Teams.ToList();
+            List<Team> availableTeams = allTeams.Except(participatingTeams).ToList();
+
+            competition.AllTeams = availableTeams;
+            ViewData["CompetitionId"] = competitionId;
+            return View(competition);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTeam(int competitionId, int teamId)
+        {
+            Competition? competition = await _context.Competitions
+                .Include(c => c.Teams)
+                .FirstOrDefaultAsync(c => c.Id == competitionId);
+
+            Team? teamToAdd = await _context.Teams.FindAsync(teamId);
+
+            if (competition == null || teamToAdd == null)
+            {
+                //return NotFound();
+                return RedirectToAction("Teams", new { competitionId });
+            }
+
+            if (competition.Teams.Contains(teamToAdd))
+            {
+                return BadRequest("The team is already participating in the competition.");
+            }
+
+            competition.Teams.Add(teamToAdd);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Teams", new { competitionId });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTeam(int competitionId, int teamId)
+        {
+            Competition? competition = await _context.Competitions
+                .Include(c => c.Teams)
+                    .ThenInclude(t => t.GameTeam1s)
+                .Include(c => c.Teams)
+                    .ThenInclude(t => t.GameTeam2s)
+                .FirstOrDefaultAsync(c => c.Id == competitionId);
+
+            if (competition == null)
+            {
+                return RedirectToAction("Teams", new { competitionId });
+            }
+
+            List<Game> del = new List<Game>();
+            foreach (var game in competition.Games)
+            {
+                if (game.Team1Id == teamId || game.Team2Id == teamId)
+                {
+                    del.Add(game);
+                }
+            }
+
+            foreach (var team in competition.Teams)
+            {
+                if (team.Id == teamId)
+                {
+                    competition.Teams.Remove(team);
+                    break;
+                }
+            }
+
+            foreach (var game in del)
+            {
+                _context.Games.Remove(game);
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Teams", new { competitionId });
+        }
+
+        public async Task<IActionResult> Leaderboard(int? id)
+        {
+            if (id == null || _context.Competitions == null)
+            {
+                return NotFound();
+            }
+
+            var competition = await _context.Competitions.Include(c => c.CompetitionTypeNavigation).Include(c => c.Games).FirstOrDefaultAsync(m => m.Id == id);
+            if (competition == null)
+            {
+                return NotFound();
+            }
+
+            return View(competition);
         }
     }
 }

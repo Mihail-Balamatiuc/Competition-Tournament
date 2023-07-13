@@ -14,7 +14,10 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    /*background-image: url("/Images/back5.jpg");
+    background-size: cover;
+    background-attachment: fixed;*/
 }
 
 #cnt{
@@ -26,20 +29,35 @@ body {
 }
 
 #cntr{
-    width: 40%;
+    width: 60%;
 }
 
 .cmp-cnt {
-    background-color: lightblue;
+    background-color: rgba(0, 45, 105, 0.12);
     margin-top: 20px;
     margin-bottom: 20px;
-    border-radius: 20px;
     transition: 0.5s;
+    padding: 15px;
+    text-decoration: double;
 }
 
 .cmp-cnt:hover {
     transition: 0.1s;
     transform: scale(1.01);
-    box-shadow: 0px 0px 10px 4px rgb(0, 98, 255);
+    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.25);
     opacity: 20;
+}
+
+.leader-tab {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.leader-row {
+    border: 1px solid black;
+}
+
+.leader-box {
+    min-width: 150px;
+    border: 1px solid black;
 }

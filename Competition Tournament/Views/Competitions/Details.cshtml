@@ -41,8 +41,18 @@
             @Html.DisplayFor(model => model.CompetitionTypeNavigation.Name)
         </dd>
     </dl>
+    <h5>Games from competition:</h5>
+    @if (Model.Games.Count > 0){
+        foreach(var game in Model.Games)
+        {
+            <p>@game.Team1Name - @game.Team2Name (@game.Team1Score - @game.Team2Score)</p>
+        }
+    }
+    else{
+        <h5>No Games</h5>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a href="javascript:history.back()">Back</a>
 </div>

@@ -52,7 +52,9 @@
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-controller="Games" asp-action="Create" asp-route-id="@item.Id">Add Game</a>
+                <a asp-controller="Games" asp-action="Create" asp-route-id="@item.Id">Add game</a>|
+                <a asp-controller="Games" asp-action="Index" asp-route-id="@item.Id">Manage games</a>|
+                <a href="@Url.Action("Teams", "Competitions", new { competitionId = item.Id })">Manage teams</a>
             </td>
         </tr>
 }

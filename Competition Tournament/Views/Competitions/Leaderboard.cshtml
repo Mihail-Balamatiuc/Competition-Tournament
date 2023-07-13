@@ -1,0 +1,94 @@
+﻿@model Competition_Tournament.Models.Competition
+
+<h1>Leaderboard for @Model.Name</h1>
+<table class="leader-tab">
+    <tr class="leader-row">
+        <td class="leader-box"><h3>Team</h3></td>
+        @if (Model.CompetitionType == 1)
+        {
+            <td class="leader-box"><h3>Score</h3></td>
+        }
+        else
+        {
+            <td class="leader-box"><h3>Loses</h3></td>
+        }
+    </tr>
+    @{
+        if (Model.CompetitionType == 1)
+        {
+            Dictionary<string, int?> q = new Dictionary<string, int?>();
+
+            foreach (var game in Model.Games)
+            {
+                if (game.Team1Score != null && game.Team2Score != null)
+                {
+                    if (!q.ContainsKey(game.Team1Name))
+                        q.Add(game.Team1Name, 0);
+                    if (!q.ContainsKey(game.Team2Name))
+                        q.Add(game.Team2Name, 0);
+                    if (game.Team1Score == game.Team2Score)
+                    {
+                        q[game.Team1Name] += 1;
+                        q[game.Team2Name] += 1;
+                    }
+                    else if (game.Team1Score > game.Team2Score)
+                    {
+                        q[game.Team1Name] += 3;
+                    }
+                    else
+                    {
+                        q[game.Team2Name] += 3;
+                    }
+                }
+            }
+
+            var sortedDict = from entry in q
+                             orderby entry.Value descending
+                             select entry;
+
+            foreach (var game in sortedDict)
+            {
+                <tr>
+                    <td class="leader-box">@game.Key</td>
+                    <td class="leader-box">@game.Value</td>
+                </tr>
+            }
+        }
+        else
+        {
+            Dictionary<string, int?> q = new Dictionary<string, int?>();
+
+            foreach (var game in Model.Games)
+            {
+                if (game.Team1Score != null && game.Team2Score != null)
+                {
+                    if (!q.ContainsKey(game.Team1Name))
+                        q.Add(game.Team1Name, 0);
+                    if (!q.ContainsKey(game.Team2Name))
+                        q.Add(game.Team2Name, 0);
+
+                    if (game.Team1Score < game.Team2Score)
+                    {
+                        q[game.Team1Name] += 1;
+                    }
+                    else
+                    {
+                        q[game.Team2Name] += 1;
+                    }
+                }
+            }
+
+            var sortedDict = from entry in q
+                             orderby entry.Value ascending
+                             select entry;
+
+            foreach (var game in sortedDict)
+            {
+                <tr>
+                    <td class="leader-box">@game.Key</td>
+                    <td class="leader-box">@game.Value</td>
+                </tr>
+            }
+        }
+    }
+</table>

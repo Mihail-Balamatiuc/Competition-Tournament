@@ -1,0 +1,41 @@
+﻿@model Competition_Tournament.Models.Competition
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<h2>Add Team</h2>
+
+<form method="post" action="@Url.Action("AddTeam", "Competitions")">
+    <input type="hidden" name="competitionId" value="@Model.Id" />
+    <div class="form-group">
+        <label for="teamId">Select a Team:</label>
+        <select class="form-control" id="teamId" name="teamId">
+            @foreach (var team in Model.AllTeams)
+            {
+                <option value="@team.Id">@team.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Team</button>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</form>
+
+<hr />
+<h2>Teams Participating in @Model.Name</h2>
+
+<ul>
+    @foreach (var team in Model.Teams)
+    {
+        <li>
+            @team.Name
+            <form method="post" action="@Url.Action("DeleteTeam", "Competitions")">
+                <input type="hidden" name="teamId" value="@team.Id" />
+                <input type="hidden" name="competitionId" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </li>
+    }
+</ul>
