@@ -65,6 +65,15 @@ namespace Competition_Tournament.Controllers
                     ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
                     return View(competition);
                 }
+                foreach(var cmp in _context.Competitions)
+                {
+                    if(cmp.Name.ToLower() == competition.Name.ToLower())
+                    {
+                        ModelState.AddModelError("Name", "This name is already used");
+                        ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
+                        return View(competition);
+                    }
+                }
                 _context.Add(competition);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Home");

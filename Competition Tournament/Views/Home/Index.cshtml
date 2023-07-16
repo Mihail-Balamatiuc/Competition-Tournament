@@ -7,7 +7,7 @@
 <div class="text-center">
     <div id="cnt">
         <div id="cntr">
-            <h3>All Competitions:</h3>
+            <h3 id="all-cmp">All Competitions</h3>
             @for (int i = 0; i < Model.Count; i++)
             {
                 var competition = Model[i];
@@ -88,32 +88,32 @@
                 //am identificat castigatorul
 
                 <div class = "cmp-cnt">
-                    <h4>Competition @(i + 1): @competition.Name</h4>
+                    <h3 style="border-bottom: 1px solid black">Competition @(i + 1): @competition.Name</h3>
                     @if (winner.Length > 0)
                     {
-                        <p>Winner: @winner</p>
+                        <h6>Winner: @winner</h6>
                     }
                     else
                     {
-                        <p>Winner: Unknown</p>
+                        <h6>Winner: Unknown</h6>
                     }
-                    <p>Start: @competition.StartDate?.ToString("dd/MM/yyyy")</p>
-                    <p>End: @competition.EndDate?.ToString("dd/MM/yyyy")</p>
-                    <p>Location: @competition.Location </p>
-                    <p>Type: @competition.CompetitionTypeNavigation.Name</p>
-                    <a href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a>
-                    <h6>Games played:</h6>
+                    <h6>Start: @competition.StartDate?.ToString("dd/MM/yyyy")</h6>
+                    <h6>End: @competition.EndDate?.ToString("dd/MM/yyyy")</h6>
+                    <h6>Location: @competition.Location </h6>
+                    <h6>Type: @competition.CompetitionTypeNavigation.Name</h6>
+                    <a class="modify" href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a>
+                    <h5 style="margin-top: 20px">Games played:</h5>
                     @if (competition.Games.Count > 0)
                     {
                         @foreach (var game in competition.Games)
                         {
-                            <p>@game.Team1Name - @game.Team2Name (@game.Team1Score - @game.Team2Score)</p>
+                            <p class="home-games">@game.Team1Name - @game.Team2Name (@game.Team1Score - @game.Team2Score)</p>
                         }
                     }
                     else{
                         <p>No games</p>
                     }
-                    <a asp-controller="Competitions" asp-action="Leaderboard" asp-route-id="@competition.Id">Leaderboard</a>
+                    <a class="modify" asp-controller="Competitions" asp-action="Leaderboard" asp-route-id="@competition.Id">Leaderboard</a>
                 </div>
             }
         </div>

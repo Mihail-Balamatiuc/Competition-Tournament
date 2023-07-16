@@ -7,11 +7,11 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="create-new-btn" asp-action="Create">Create New</a>
 </p>
 <form method="get">
-    <label for="teamId">Team:</label>
-    <select id="teamId" name="id" onchange="location.href = this.value ? '/Players/Index/' + this.value : '/Players/Index'">
+    <label for="teamId"><h5>Team:</h5></label>
+    <select id="teamId" name="id" onchange="location.href = this.value ? '/Players/Index/' + this.value : '/Players/Index'" style="background-color: rgba(0, 251, 255, 0.64)">
         <option value="">All</option>
         @foreach (var item in ViewBag.Teams)
         {
@@ -20,14 +20,14 @@
         }
     </select>
 </form>
-<table class="table">
+<table class="table" style="margin-top: 20px">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Age)
@@ -42,10 +42,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Age)
@@ -53,12 +53,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Team.Name)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td class="player-wide">
+                <a class="modify" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a class="modify" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a class="modify" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
+        <tr class="player-small" style="background-color: rgba(0, 98, 99, 0.7)">
+            <td colspan="6">
+                <div style="width: 100%; display: flex; justify-content:space-around">
+                    <a class="modify" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="modify" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="modify" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </td>
+        </tr>    
 }
     </tbody>
 </table>

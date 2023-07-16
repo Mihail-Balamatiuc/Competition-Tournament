@@ -1,37 +1,38 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Hello Football</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Competition_Tournament</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Competition_Tournament.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/Images/planet.gif">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+        <nav class="navbar navbar-expand navbar-light p-0 fixed-top" style="background-color: black; height: 50px; border-bottom: 2px solid rgba(0, 251, 255, 0.64)">
+            <div class="container-fluid" style="height: 100%">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" style="height: 100%">
+                    <ul class="navbar-nav flex-grow-1" style="height: 100%;">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a style="font-family: 'DM Sans', sans-serif;" class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><h5 style="margin-top: 9px">NetRom Football</h5></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Team" asp-action="Index">Team</a>
+                            <a style="font-family: 'DM Sans', sans-serif;" class="nav-link text-white" asp-area="" asp-controller="Team" asp-action="Index">Team</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="/Players" asp-action="Index">Players</a>
+                            <a style="font-family: 'DM Sans', sans-serif;" class="nav-link text-white" asp-area="" asp-controller="/Players" asp-action="Index">Players</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Competitions" asp-action="Index">Competition</a>
+                            <a style="font-family: 'DM Sans', sans-serif;" class="nav-link text-white" asp-area="" asp-controller="Competitions" asp-action="Index">Competition</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Index">Games</a>
+                            <a style="font-family: 'DM Sans', sans-serif;" class="nav-link text-white" asp-area="" asp-controller="Games" asp-action="Index">Games</a>
                         </li>
                     </ul>
                 </div>

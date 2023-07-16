@@ -70,7 +70,7 @@ namespace Competition_Tournament.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Team1Id,Team2Id,Team1Score,Team2Score,Team1Name,Team2Name,CompetitionId,Date,Stadium")] Game game, int CompId)
         {
-            Competition competition = _context.Competitions.Include(c => c.Teams).FirstOrDefault(c => c.Id == CompId);
+            Competition competition = _context.Competitions.Include(c => c.Teams).Include(c => c.Games).FirstOrDefault(c => c.Id == CompId);
             if (ModelState.IsValid)
             {
                 if (game.Team1Id == game.Team2Id)
@@ -92,6 +92,32 @@ namespace Competition_Tournament.Controllers
                     ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
                     ViewData["nr"] = competition.Teams.Count;
                     return View(game);
+                }
+                if(game.Date.Value.Date > competition.EndDate.Value.Date || game.Date.Value.Date < competition.StartDate.Value.Date)
+                {
+                    ModelState.AddModelError("Date", "Date is not in competition interval");
+                    ViewData["id"] = CompId;
+                    ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
+                    ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");
+                    ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
+                    ViewData["nr"] = competition.Teams.Count;
+                    return View(game);
+                }
+                if (competition.CompetitionType == 2)
+                {
+                    foreach (var gm in competition.Games)
+                    {
+                        if ((gm.Team1Id == game.Team1Id && gm.Team2Id == game.Team2Id) || (gm.Team1Id == game.Team2Id && gm.Team2Id == game.Team1Id))
+                        {
+                            ModelState.AddModelError("Team2Id", "You can not have 2 identical games in Knock-Out competition");
+                            ViewData["id"] = CompId;
+                            ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
+                            ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");
+                            ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
+                            ViewData["nr"] = competition.Teams.Count;
+                            return View(game);
+                        }
+                    }
                 }
                 game.Team1Name = _context.Teams.Find(game.Team1Id).Name;
 				game.Team2Name = _context.Teams.Find(game.Team2Id).Name;
@@ -155,6 +181,16 @@ namespace Competition_Tournament.Controllers
                     if (game.Team1Score != null && game.Team2Score != null && competition.CompetitionType == 2 && game.Team1Score == game.Team2Score)
                     {
                         ModelState.AddModelError("Team2Score", "You can not have a equal game in Knock-Out");
+                        ViewData["id"] = game.CompetitionId;
+                        ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
+                        ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");
+                        ViewData["Team2Id"] = new SelectList(_context.Teams, "Id", "Name");
+                        ViewData["nr"] = competition.Teams.Count;
+                        return View(game);
+                    }
+                    if (game.Date.Value.Date > competition.EndDate.Value.Date || game.Date.Value.Date < competition.StartDate.Value.Date)
+                    {
+                        ModelState.AddModelError("Date", "Date is not in competition interval");
                         ViewData["id"] = game.CompetitionId;
                         ViewData["CompetitionId"] = new SelectList(_context.Competitions, "Id", "Name");
                         ViewData["Team1Id"] = new SelectList(_context.Teams, "Id", "Name");

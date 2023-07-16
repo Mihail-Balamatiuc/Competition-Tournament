@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="create-new-btn" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -42,12 +42,21 @@
             <td>
                 @Html.Raw(item.CreatedOn?.ToString("d"))
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Players" asp-action="Index" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td class="team-wide">
+                <a class="modify" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a class="modify" asp-controller="Players" asp-action="Index" asp-route-id="@item.Id">Details</a> 
+                <a class="modify" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
+        <tr class="team-small" style="background-color: rgba(0, 98, 99, 0.7)">
+            <td colspan="6">
+                <div style="width: 100%; display: flex; justify-content:space-around">
+                    <a class="modify" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                    <a class="modify" asp-controller="Players" asp-action="Index" asp-route-id="@item.Id">Details</a> 
+                    <a class="modify" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </td>
+        </tr>   
 }
     </tbody>
 </table>

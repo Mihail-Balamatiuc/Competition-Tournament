@@ -12,11 +12,13 @@
         {
             <td class="leader-box"><h3>Loses</h3></td>
         }
+        <td class="leader-box"><h3>Goals</h3></td>
     </tr>
     @{
         if (Model.CompetitionType == 1)
         {
             Dictionary<string, int?> q = new Dictionary<string, int?>();
+            Dictionary<string, int?> goals = new Dictionary<string, int?>();
 
             foreach (var game in Model.Games)
             {
@@ -26,18 +28,29 @@
                         q.Add(game.Team1Name, 0);
                     if (!q.ContainsKey(game.Team2Name))
                         q.Add(game.Team2Name, 0);
+                    if (!goals.ContainsKey(game.Team1Name))
+                        goals.Add(game.Team1Name, 0);
+                    if (!goals.ContainsKey(game.Team2Name))
+                        goals.Add(game.Team2Name, 0);
+
                     if (game.Team1Score == game.Team2Score)
                     {
                         q[game.Team1Name] += 1;
                         q[game.Team2Name] += 1;
+                        goals[game.Team1Name] += game.Team1Score;
+                        goals[game.Team2Name] += game.Team2Score;
                     }
                     else if (game.Team1Score > game.Team2Score)
                     {
                         q[game.Team1Name] += 3;
+                        goals[game.Team1Name] += game.Team1Score;
+                        goals[game.Team2Name] += game.Team2Score;
                     }
                     else
                     {
                         q[game.Team2Name] += 3;
+                        goals[game.Team1Name] += game.Team1Score;
+                        goals[game.Team2Name] += game.Team2Score;
                     }
                 }
             }
@@ -51,12 +64,14 @@
                 <tr>
                     <td class="leader-box">@game.Key</td>
                     <td class="leader-box">@game.Value</td>
+                    <td class="leader-box">@goals[game.Key]</td>
                 </tr>
             }
         }
         else
         {
             Dictionary<string, int?> q = new Dictionary<string, int?>();
+            Dictionary<string, int?> goals = new Dictionary<string, int?>();
 
             foreach (var game in Model.Games)
             {
@@ -66,14 +81,22 @@
                         q.Add(game.Team1Name, 0);
                     if (!q.ContainsKey(game.Team2Name))
                         q.Add(game.Team2Name, 0);
+                    if (!goals.ContainsKey(game.Team1Name))
+                        goals.Add(game.Team1Name, 0);
+                    if (!goals.ContainsKey(game.Team2Name))
+                        goals.Add(game.Team2Name, 0);
 
                     if (game.Team1Score < game.Team2Score)
                     {
                         q[game.Team1Name] += 1;
+                        goals[game.Team1Name] += game.Team1Score;
+                        goals[game.Team2Name] += game.Team2Score;
                     }
                     else
                     {
                         q[game.Team2Name] += 1;
+                        goals[game.Team1Name] += game.Team1Score;
+                        goals[game.Team2Name] += game.Team2Score;
                     }
                 }
             }
@@ -87,6 +110,7 @@
                 <tr>
                     <td class="leader-box">@game.Key</td>
                     <td class="leader-box">@game.Value</td>
+                    <td class="leader-box">@goals[game.Key]</td>
                 </tr>
             }
         }

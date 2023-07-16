@@ -3,25 +3,32 @@
 @{
     ViewData["Title"] = "Teams";
 }
+@if (Model.AllTeams.Count > 0)
+{
+    <h2>Add Team</h2>
 
-<h2>Add Team</h2>
+    <form method="post" action="@Url.Action("AddTeam", "Competitions")">
+        <input type="hidden" name="competitionId" value="@Model.Id" />
+        <div class="form-group">
 
-<form method="post" action="@Url.Action("AddTeam", "Competitions")">
-    <input type="hidden" name="competitionId" value="@Model.Id" />
-    <div class="form-group">
-        <label for="teamId">Select a Team:</label>
-        <select class="form-control" id="teamId" name="teamId">
-            @foreach (var team in Model.AllTeams)
-            {
-                <option value="@team.Id">@team.Name</option>
-            }
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Team</button>
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-</form>
+            <label for="teamId">Select a Team:</label>
+            <select class="form-control" id="teamId" name="teamId" style="max-width: 500px">
+                @foreach (var team in Model.AllTeams)
+                {
+                    <option value="@team.Id">@team.Name</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="submit-btn">Add Team</button>
+        <div>
+            <a style="color: rgba(0, 206, 209, 1)" asp-action="Index">Back to List</a>
+        </div>
+    </form>
+}
+else
+{
+    <a class="create-new-btn" asp-action="Index">Back to List</a>
+}
 
 <hr />
 <h2>Teams Participating in @Model.Name</h2>
