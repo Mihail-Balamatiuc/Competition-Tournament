@@ -76,7 +76,7 @@ namespace Competition_Tournament.Controllers
                 }
                 _context.Add(competition);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Competitions");
             }
             ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
             return View(competition);
@@ -123,6 +123,14 @@ namespace Competition_Tournament.Controllers
                 }
                 try
                 {
+                    var exist = _context.Competitions.AsNoTracking().Where(c => c.Name == competition.Name).FirstOrDefault();
+                    if (exist.Name.ToLower() == competition.Name.ToLower() && exist.Id != competition.Id)
+                    {
+                        ModelState.AddModelError("Name", "This name is already used");
+                        ViewData["CompetitionType"] = new SelectList(_context.Competitiontypes, "Id", "Name", competition.CompetitionType);
+                        return View(competition);
+                    }
+
                     _context.Update(competition);
                     await _context.SaveChangesAsync();
                 }

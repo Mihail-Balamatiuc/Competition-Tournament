@@ -107,9 +107,9 @@ namespace Competition_Tournament.Controllers
         [HttpPost]
         public IActionResult Edit(Team team)
         {
-            var exist = _context.Teams.Where(c => c.Name == team.Name).FirstOrDefault();
-         
-            if(exist != null)
+            var exist = _context.Teams.AsNoTracking().Where(c => c.Name == team.Name).FirstOrDefault();
+
+            if (exist != null && exist.Id != team.Id)
             {
                 string first = exist.Name.ToLower();
                 string second = team.Name.ToLower();
