@@ -29,6 +29,11 @@ public partial class Competition
 
     public int? CompetitionType { get; set; }
 
+    public byte[]? Image { get; set; }
+
+    [NotMapped]
+    public IFormFile? ImageFile { get; set; }
+
     [ForeignKey("CompetitionType")]
     [InverseProperty("Competitions")]
     public virtual Competitiontype? CompetitionTypeNavigation { get; set; }

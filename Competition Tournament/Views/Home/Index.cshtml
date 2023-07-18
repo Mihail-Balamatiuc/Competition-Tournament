@@ -101,7 +101,11 @@
                     <h6>End: @competition.EndDate?.ToString("dd/MM/yyyy")</h6>
                     <h6>Location: @competition.Location </h6>
                     <h6>Type: @competition.CompetitionTypeNavigation.Name</h6>
-                    <a class="modify" href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a>
+                    <a class="modify" href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a><br>
+                    @if (competition.Image != null)
+                    {
+                        <img src="@($"data:image;base64,{Convert.ToBase64String(competition.Image)}")" alt="Player Picture" style="max-width: 198.75px; max-height: 198.75px; margin-top: 20px; opacity: 80%" />
+                    }
                     <h5 style="margin-top: 20px">Games played:</h5>
                     @if (competition.Games.Count > 0)
                     {
