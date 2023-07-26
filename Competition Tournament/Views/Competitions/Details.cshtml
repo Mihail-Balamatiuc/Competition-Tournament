@@ -1,0 +1,58 @@
+﻿@model Competition_Tournament.Models.Competition
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Competition</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Start Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.Raw(Model.StartDate?.ToString("d"))
+        </dd>
+        <dt class = "col-sm-2">
+            End Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.Raw(Model.EndDate?.ToString("d"))
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt class = "col-sm-2">
+            Competition Type
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CompetitionTypeNavigation.Name)
+        </dd>
+    </dl>
+    <h5>Games from competition:</h5>
+    @if (Model.Games.Count > 0){
+        foreach(var game in Model.Games)
+        {
+            <p>@game.Team1Name - @game.Team2Name (@game.Team1Score - @game.Team2Score)</p>
+        }
+    }
+    else{
+        <h5>No Games</h5>
+    }
+</div>
+<div>
+    <a class="create-new-btn" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="create-new-btn" href="javascript:history.back()">Back</a>
+</div>

@@ -1,8 +1,125 @@
-﻿@{
+﻿@model List<Competition_Tournament.Models.Competition>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Hello World</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div id="cnt">
+        <div id="cntr">
+            <h3 id="all-cmp">All Competitions</h3>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var competition = Model[i];
+                string winner = "";
+                //identificam castigatorul
+                
+                if(competition.CompetitionType == 1)
+                {
+                    Dictionary<string, int?> q = new Dictionary<string, int?>();
+                    foreach (var game in competition.Games)
+                    {
+                        if (game.Team1Score != null && game.Team2Score != null)
+                        {
+                            if (!q.ContainsKey(game.Team1Name))
+                                q.Add(game.Team1Name, 0);
+                            if (!q.ContainsKey(game.Team2Name))
+                                q.Add(game.Team2Name, 0);
+                            if (game.Team1Score == game.Team2Score)
+                            {
+                                q[game.Team1Name] += 1;
+                                q[game.Team2Name] += 1;
+                            }
+                            else if (game.Team1Score > game.Team2Score)
+                            {
+                                q[game.Team1Name] += 3;
+                            }
+                            else
+                            {
+                                q[game.Team2Name] += 3;
+                            }
+                        }
+                    }
+
+                    var sortedDict = from entry in q
+                                     orderby entry.Value descending
+                                     select entry;
+                    foreach(var win in sortedDict)
+                    {
+                        winner = win.Key;
+                        break;
+                    }
+                }
+                else
+                {
+                    Dictionary<string, int?> q = new Dictionary<string, int?>();
+
+                    foreach (var game in competition.Games)
+                    {
+                        if (game.Team1Score != null && game.Team2Score != null)
+                        {
+                            if (!q.ContainsKey(game.Team1Name))
+                                q.Add(game.Team1Name, 0);
+                            if (!q.ContainsKey(game.Team2Name))
+                                q.Add(game.Team2Name, 0);
+
+                            if (game.Team1Score < game.Team2Score)
+                            {
+                                q[game.Team1Name] += 1;
+                            }
+                            else
+                            {
+                                q[game.Team2Name] += 1;
+                            }
+                        }
+                    }
+
+                    var sortedDict = from entry in q
+                                     orderby entry.Value ascending
+                                     select entry;
+
+                    foreach(var win in sortedDict)
+                    {
+                        winner = win.Key;
+                        break;
+                    }
+                }
+                
+                //am identificat castigatorul
+
+                <div class = "cmp-cnt">
+                    <h3 style="border-bottom: 1px solid black">Competition @(i + 1): @competition.Name</h3>
+                    @if (winner.Length > 0)
+                    {
+                        <h6>Winner: @winner</h6>
+                    }
+                    else
+                    {
+                        <h6>Winner: Unknown</h6>
+                    }
+                    <h6>Start: @competition.StartDate?.ToString("dd/MM/yyyy")</h6>
+                    <h6>End: @competition.EndDate?.ToString("dd/MM/yyyy")</h6>
+                    <h6>Location: @competition.Location </h6>
+                    <h6>Type: @competition.CompetitionTypeNavigation.Name</h6>
+                    <a class="modify" href="@Url.Action("Details", "Competitions", new { id = competition.Id })">Details</a><br>
+                    @if (competition.Image != null)
+                    {
+                        <img src="@($"data:image;base64,{Convert.ToBase64String(competition.Image)}")" alt="Player Picture" style="max-width: 198.75px; max-height: 198.75px; margin-top: 20px; opacity: 80%" />
+                    }
+                    <h5 style="margin-top: 20px">Games played:</h5>
+                    @if (competition.Games.Count > 0)
+                    {
+                        @foreach (var game in competition.Games)
+                        {
+                            <p class="home-games">@game.Team1Name - @game.Team2Name (@game.Team1Score - @game.Team2Score)</p>
+                        }
+                    }
+                    else{
+                        <p>No games</p>
+                    }
+                    <a class="modify" asp-controller="Competitions" asp-action="Leaderboard" asp-route-id="@competition.Id">Leaderboard</a>
+                </div>
+            }
+        </div>
+    </div>
 </div>

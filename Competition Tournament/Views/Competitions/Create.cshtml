@@ -1,0 +1,56 @@
+﻿@model Competition_Tournament.Models.Competition
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Competition</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" required/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label">Start Date</label>
+                <input asp-for="StartDate" type="date" class="form-control" required />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label">End Date</label>
+                <input asp-for="EndDate" type="date" class="form-control" required />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" required />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitionType" class="control-label">Competition Type</label>
+                <select asp-for="CompetitionType" class ="form-control" asp-items="ViewBag.CompetitionType"></select>
+            </div>
+            <div class="form-group">
+                <label for="ImageFile" class="control-label">Image</label>
+                <input type="file" id="ImageFile" name="ImageFile" accept="image/*" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="submit-btn" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a style="color: rgba(0, 206, 209, 1)" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

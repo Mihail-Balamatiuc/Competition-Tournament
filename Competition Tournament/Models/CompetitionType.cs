@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Models;
 
-[Table("CompetitionType")]
-public partial class CompetitionType
+[Table("COMPETITIONTYPE")]
+public partial class Competitiontype
 {
     [Key]
+    [Column("ID")]
     public int Id { get; set; }
 
+    [Column("NAME")]
     [StringLength(255)]
     [Unicode(false)]
     public string? Name { get; set; }

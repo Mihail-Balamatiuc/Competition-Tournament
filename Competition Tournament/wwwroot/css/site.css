@@ -1,11 +1,75 @@
+/*aici sunt style-urile pt scroll-bar*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 251, 255, 0.64);
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
 html {
   font-size: 14px;
 }
+
+/*media styles*/
 
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
+}
+
+/*pentru competitii*/
+@media screen and (max-width: 1200px) {
+    .competition-wide{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1201px) {
+    .competition-small {
+        display: none;
+    }
+}
+/*pentru player*/
+
+@media screen and (max-width: 520px) {
+    .player-wide {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 521px) {
+    .player-small {
+        display: none;
+    }
+}
+
+/*pentru teams*/
+
+@media screen and (max-width: 768px) {
+    .team-wide {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .team-small {
+        display: none;
+    }
 }
 
 html {
@@ -14,5 +78,152 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url("/Images/cube.gif");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#cnt{
+    width: 100%;
+    min-height: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#cntr{
+    width: 60%;
+}
+
+table {
+    background-color: rgba(0, 251, 255, 0.64);
+}
+
+.cmp-cnt {
+    background-color: rgba(0, 251, 255, 0.64);
+    margin-top: 50px;
+    margin-bottom: 20px;
+    transition: 0.5s;
+    padding: 15px;
+    text-decoration: double;
+    color: black;
+}
+
+.cmp-cnt:hover {
+    transition: 0.1s;
+    transform: scale(1.01);
+    box-shadow: 0px 0px 10px 4px white;
+    opacity: 20;
+}
+
+.leader-tab {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.leader-row {
+    border: 1px solid black;
+}
+
+.leader-box {
+    min-width: 150px;
+    border: 1px solid black;
+}
+
+.nav-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+}
+
+.nav-item {
+    background: linear-gradient(black, black 50%, rgba(0, 206, 209, 1) 50%, rgba(0, 206, 209, 1));
+    background-size: 100% 200%;
+    /*trasition effect for background*/
+    transition: background 0.2s;
+}
+
+.nav-item:hover{
+    background-position: 100% 100%;
+    color: black;
+}
+
+.container{
+    margin-top: 70px;
+    color: white;
+}
+
+/*butoanele de navigare din index*/
+.modify {
+    text-decoration: none;
+    color: white;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.30);
+    padding: 5px;
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+.modify:hover{
+    color: white;
+    transition: 0.1s;
+    box-shadow: 0px 0px 10px 4px white;
+    opacity: 20;
+}
+
+#all-cmp {
+    height: 60px;
+    background-color: black;
+    color: white;
+    border: 2px solid rgba(0, 251, 255, 0.64);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-new-btn {
+    text-decoration: none;
+    color: black;
+    border-radius: 2px;
+    background-color: rgba(0, 251, 255, 0.64);
+    padding: 5px;
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+.create-new-btn:hover{
+    color: white;
+    transition: 0.1s;
+    background-color: rgba(0, 206, 209, 1);
+    border: 1px solid white;
+    box-shadow: 0px 0px 10px 4px white;
+    opacity: 20;
+}
+
+.submit-btn {
+    margin-top: 20px;
+    height: 40px;
+    min-width: 70px;
+    color: black;
+    border-radius: 5px;
+    background-color: rgba(0, 206, 209, 1);
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    color: white;
+    transition: 0.1s;
+    background-color: rgba(0, 206, 209, 1);
+    border: 1px solid white;
+    box-shadow: 0px 0px 10px 4px white;
+    opacity: 20;
+}
+
+/*displayed games on home index*/
+.home-games{
+    border-bottom: 1px solid black;
 }

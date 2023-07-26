@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Competition_Tournament.Models.Competition>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="margin-bottom: 15px">Competitions</h1>
+
+<p>
+    <a class="create-new-btn" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                Competition Type
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr>
+            <td>
+                <h6>@Html.DisplayFor(modelItem => item.Name)</h6>
+            </td>
+            <td>
+                @Html.Raw(item.StartDate?.ToString("d"))
+            </td>
+            <td>
+                @Html.Raw(item.EndDate?.ToString("d"))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompetitionTypeNavigation.Name)
+            </td>
+                <td class="competition-wide">
+                    <a class="modify" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="modify" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="modify" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="modify" asp-controller="Games" asp-action="Create" asp-route-id="@item.Id">Add game</a>
+                    <a class="modify" asp-controller="Games" asp-action="Index" asp-route-id="@item.Id">Manage games</a>
+                    <a class="modify" href="@Url.Action("Teams", "Competitions", new { competitionId = item.Id })">Manage teams</a>
+                </td>
+        </tr>
+        <tr class="competition-small" style="background-color: rgba(0, 98, 99, 0.7)">
+            <td colspan="6">
+                <div style="width: 100%; display: flex; justify-content:space-around">
+                    <a class="modify" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="modify" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="modify" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="modify" asp-controller="Games" asp-action="Create" asp-route-id="@item.Id">Add game</a>
+                    <a class="modify" asp-controller="Games" asp-action="Index" asp-route-id="@item.Id">Manage games</a>
+                    <a class="modify" href="@Url.Action("Teams", "Competitions", new { competitionId = item.Id })">Manage teams</a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

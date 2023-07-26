@@ -1,0 +1,60 @@
+﻿@model Competition_Tournament.Models.Game
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Game</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Team 1 Goals
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Team1Score)
+        </dd>
+        <dt class = "col-sm-2">
+            Team 2 Goals
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Team2Score)
+        </dd>
+        <dt class = "col-sm-2">
+            Team 1 Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Team1Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Team 2 Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Team2Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stadium)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stadium)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Competition)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Competition.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a style="color: rgba(0, 206, 209, 1)" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a style="color: rgba(0, 206, 209, 1)" href="javascript:history.back()">Back</a>
+</div>

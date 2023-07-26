@@ -18,10 +18,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AwardNr)
+            Awards Nr
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AwardNr)
+            @Html.DisplayFor(model => model.AwardsNr)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Motto)
@@ -30,16 +30,16 @@
             @Html.DisplayFor(model => model.Motto)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
+            Created On
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
+            @Html.Raw(Model.CreatedOn?.ToString("d"))
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a style="color: rgba(0, 206, 209, 1)" asp-action="Index">Back to List</a>
     </form>
 </div>

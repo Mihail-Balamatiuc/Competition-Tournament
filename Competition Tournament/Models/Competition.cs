@@ -6,32 +6,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Competition_Tournament.Models;
 
-[Table("Competition")]
+[Table("COMPETITION")]
 public partial class Competition
 {
     [Key]
+    [Column("ID")]
     public int Id { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Name { get; set; }
 
-    [Column("End_Date", TypeName = "date")]
-    public DateTime? EndDate { get; set; }
-
-    [Column("Start_Date", TypeName = "date")]
+    [Column(TypeName = "date")]
     public DateTime? StartDate { get; set; }
+
+    [Column(TypeName = "date")]
+    public DateTime? EndDate { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Location { get; set; }
 
-    [Column("Competition_Type")]
     public int? CompetitionType { get; set; }
+
+    public byte[]? Image { get; set; }
+
+    [NotMapped]
+    public IFormFile? ImageFile { get; set; }
 
     [ForeignKey("CompetitionType")]
     [InverseProperty("Competitions")]
-    public virtual CompetitionType? CompetitionTypeNavigation { get; set; }
+    public virtual Competitiontype? CompetitionTypeNavigation { get; set; }
 
     [InverseProperty("Competition")]
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();
@@ -39,4 +44,7 @@ public partial class Competition
     [ForeignKey("CompetitionId")]
     [InverseProperty("Competitions")]
     public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
+
+    [NotMapped] // This property will not be mapped to the database
+    public List<Team> AllTeams { get; set; } = new List<Team>();
 }
